@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roselyn Diaz — Computer & Software Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --border: #2a2a3a;
+      --accent: #b478ff;
+      --accent2: #78c8ff;
+      --accent3: #ff78c0;
+      --text: #e8e8f0;
+      --muted: #888899;
+      --tag-bg: #1e1e2e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.3;
+    }
+
+    /* Ambient glow */
+    .ambient {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .ambient-1 { width: 600px; height: 600px; background: rgba(180,120,255,0.07); top: -200px; right: -100px; }
+    .ambient-2 { width: 400px; height: 400px; background: rgba(120,200,255,0.05); bottom: 200px; left: -100px; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 60px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 140px 60px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-label::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(52px, 8vw, 96px);
+      line-height: 0.95;
+      letter-spacing: -3px;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 48px;
+      line-height: 1.8;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0a0f;
+      font-weight: 400;
+    }
+    .btn-primary:hover { background: #c89aff; transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+    .hero-stats {
+      margin-top: 80px;
+      display: flex;
+      gap: 48px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 100px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 48px);
+      letter-spacing: -1.5px;
+      margin-bottom: 56px;
+      line-height: 1.1;
+    }
+
+    /* ─── EXPERIENCE ─── */
+    .exp-grid {
+      display: grid;
+      gap: 2px;
+    }
+
+    .exp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 36px 40px;
+      border-radius: 4px;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .exp-card:hover { border-color: var(--accent); background: #1a1a26; }
+    .exp-card:hover::before { opacity: 1; }
+
+    .exp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .exp-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .exp-date {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      white-space: nowrap;
+      padding: 4px 10px;
+      border: 1px solid rgba(120,200,255,0.2);
+      border-radius: 2px;
+    }
+
+    .exp-org {
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+
+    .exp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .exp-list li {
+      color: var(--muted);
+      font-size: 13px;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .exp-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* ─── EDUCATION ─── */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 32px;
+      border-radius: 4px;
+      transition: border-color 0.2s;
+    }
+
+    .edu-card:hover { border-color: var(--accent3); }
+
+    .edu-degree {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .edu-school {
+      color: var(--accent3);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .edu-date {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .gpa-badge {
+      display: inline-block;
+      margin-top: 12px;
+      background: rgba(255,120,192,0.12);
+      border: 1px solid rgba(255,120,192,0.25);
+      color: var(--accent3);
+      padding: 4px 12px;
+      border-radius: 2px;
+      font-size: 12px;
+    }
+
+    .activities {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 12px;
+      border-radius: 2px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── CERTS ─── */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 28px;
+      border-radius: 4px;
+      transition: border-color 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cert-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+
+    .cert-icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .cert-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .cert-org {
+      color: var(--accent2);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .cert-year {
+      margin-top: auto;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
+    }
+
+    .skill-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .skill-item:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(180,120,255,0.05);
+    }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .contact-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 32px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 14px 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    .contact-link-icon {
+      font-size: 16px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .contact-big {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(36px, 5vw, 64px);
+      letter-spacing: -2px;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .contact-big span { color: var(--accent); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 32px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .hero-label  { animation-delay: 0.1s; }
+    h1           { animation-delay: 0.2s; }
+    .hero-desc   { animation-delay: 0.3s; }
+    .hero-btns   { animation-delay: 0.4s; }
+    .hero-stats  { animation-delay: 0.5s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      #hero, section { padding-left: 24px; padding-right: 24px; }
+      .edu-grid, .contact-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; gap: 28px; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+
+    /* Cursor line */
+    .cursor-line {
+      display: inline-block;
+      width: 2px; height: 1.1em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">RD_</a>
+    <ul class="nav-links">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#certs">Certs</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <p class="hero-label fade-up">Computer &amp; Software Engineer — Paramus, NJ</p>
+      <h1 class="fade-up">Roselyn<br/><span>Diaz</span><span class="cursor-line"></span></h1>
+      <p class="hero-desc fade-up">
+        Research intern, tournament director, and aspiring engineer with a passion for encryption, cybersecurity, and building things that matter. Currently working at the STEM Research Center at Bergen Community College.
+      </p>
+      <div class="hero-btns fade-up">
+        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+        <a href="https://www.linkedin.com/in/roselyn-diaz-9a9268307/" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
+      </div>
+      <div class="hero-stats fade-up">
+        <div>
+          <div class="stat-num">3.97</div>
+          <div class="stat-label">GPA</div>
+        </div>
+        <div>
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div>
+          <div class="stat-num">2</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+        <div>
+          <div class="stat-num">4</div>
+          <div class="stat-label">Leadership Roles</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-inner">
+      <p class="section-label">// 01 — Work History</p>
+      <h2>Professional<br/>Experience</h2>
+
+      <div class="exp-grid">
+
+        <div class="exp-card">
+          <div class="exp-top">
+            <div class="exp-title">Student Intern</div>
+            <div class="exp-date">2025 — Present</div>
+          </div>
+          <div class="exp-org">STEM Research Center at Bergen Community College</div>
+          <ul class="exp-list">
+            <li>Continuing work on summer research project, developing a volatile organic chemical sensor (LabNose) using Linux systems and Python</li>
+            <li>Helping update the center's website using Google Sites</li>
+            <li>Managing front desk operations and assisting with interviewing STEM Student Scholars Program volunteers</li>
+            <li>Participating in classroom outreach for the STEM Student Scholars Program</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top">
+            <div class="exp-title">STEM Student Scholars Program Research Intern</div>
+            <div class="exp-date">2025</div>
+          </div>
+          <div class="exp-org">STEM Research Center at Bergen Community College</div>
+          <ul class="exp-list">
+            <li>Led a team of research interns to evaluate encryption efficiency and sustainability using Python and C++</li>
+            <li>Performed PC hardware analysis and testing in Linux and Windows terminal environments</li>
+            <li>Wrote a grant proposal and presented findings through a poster and presentation at the STEM C² Summit Conference</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-top">
+            <div class="exp-title">Tournament Director</div>
+            <div class="exp-date">2023 — 2026</div>
+          </div>
+          <div class="exp-org">The English-Speaking Union</div>
+          <ul class="exp-list">
+            <li>Managing online tablature systems behind debate tournaments</li>
+            <li>Organizing paperwork and logistics involved with the tournaments</li>
+            <li>Handling team scoring and school rankings</li>
+            <li>Maintaining overall flow and operations of the tournaments</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-inner">
+      <p class="section-label">// 02 — Academic Background</p>
+      <h2>Education</h2>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="edu-degree">Associate of Applied Science</div>
+          <div class="edu-school">Bergen Community College</div>
+          <div class="edu-date">2022 — 2026</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-degree">High School Diploma</div>
+          <div class="edu-school">Applied Technology High School</div>
+          <div class="edu-date">2022 — 2026</div>
+          <div class="gpa-badge">GPA: 3.973</div>
+          <div class="activities">
+            <span class="tag">President, Science Olympiad</span>
+            <span class="tag">Class Vice President</span>
+            <span class="tag">President, Gender-Sexuality Alliance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certs">
+    <div class="section-inner">
+      <p class="section-label">// 03 — Credentials</p>
+      <h2>Certifications</h2>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <div class="cert-icon">🔐</div>
+          <div class="cert-name">IT Fundamentals Certification</div>
+          <div class="cert-org">CompTIA — Computing Technology Industry Association</div>
+          <div class="cert-year">Issued 2025</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">🛡️</div>
+          <div class="cert-name">SOC Level 1 Certificate</div>
+          <div class="cert-org">TryHackMe</div>
+          <div class="cert-year">Issued 2025</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-inner">
+      <p class="section-label">// 04 — Technical Toolkit</p>
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-item">Python</div>
+        <div class="skill-item">C++</div>
+        <div class="skill-item">Linux</div>
+        <div class="skill-item">Windows CLI</div>
+        <div class="skill-item">Google Sites</div>
+        <div class="skill-item">Hardware Analysis</div>
+        <div class="skill-item">Cybersecurity</div>
+        <div class="skill-item">Encryption</div>
+        <div class="skill-item">SOC Operations</div>
+        <div class="skill-item">Grant Writing</div>
+        <div class="skill-item">Research</div>
+        <div class="skill-item">Public Speaking</div>
+        <div class="skill-item">Team Leadership</div>
+        <div class="skill-item">Event Direction</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="contact-grid">
+        <div>
+          <p class="section-label">// 05 — Let's Connect</p>
+          <div class="contact-big">Say<br/><span>Hello_</span></div>
+          <p class="contact-text">
+            I'm always open to new opportunities, collaborations, or just a good conversation about tech and security. Feel free to reach out!
+          </p>
+          <a href="mailto:roselyndiaz480@gmail.com" class="btn btn-primary">Send an Email ↗</a>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:roselyndiaz480@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉</span>
+            roselyndiaz480@gmail.com
+          </a>
+          <a href="tel:+12016573270" class="contact-link">
+            <span class="contact-link-icon">☏</span>
+            +1 (201) 657-3270
+          </a>
+          <a href="https://www.linkedin.com/in/roselyn-diaz-9a9268307/" target="_blank" class="contact-link">
+            <span class="contact-link-icon">in</span>
+            linkedin.com/in/roselyn-diaz-9a9268307
+          </a>
+          <a href="#" class="contact-link">
+            <span class="contact-link-icon">📍</span>
+            Paramus, NJ 07652
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 Roselyn Diaz</span>
+    <span>Computer &amp; Software Engineer — Paramus, NJ</span>
+  </footer>
+
+  <script>
+    // Intersection observer for fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.style.opacity = '1';
+          el.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.exp-card, .edu-card, .cert-card, .skill-item, .contact-link').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, background 0.2s';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
